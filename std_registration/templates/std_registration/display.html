@@ -1,0 +1,67 @@
+{%extends 'login/base.html'%}
+{%block title%}
+    <title>All Records</title>
+{%endblock%}
+{%block content%}
+        <div class="row">
+            <div class="col">
+                <div class="card card-body" style="color: rgb(223, 255, 248);border: 5px;border-color: black;opacity:0.9;background-color: rgba(53, 53, 53, 0.4);">
+                    <form method="get">
+                        {% csrf_token %}
+                        {{myFilter.form}}
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {%if student%}
+        <table class="table"  style="color: rgb(255, 255, 255);border: 5px;border-color: rgb(213, 213, 213);opacity:0.9;background-color: rgba(53, 53, 53, 0.4);">
+    <thead style="border:4px white;">
+        <tr style="color: white;">
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">Sr.No.</th>
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">Full Name</th>
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">Gender</th>
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">Date of Birth</th>
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">Address</th>
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">State</th>
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">Photograph</th>
+            <th style="color: white;border-top: 2px solid white;border-bottom:2px solid white;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for each in student %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{ each.full_name }}</td>
+            <td>{{ each.gender }}</td>
+            <td>{{ each.dob }}</td>
+            <td>{{ each.address }}</td>
+            <td>{{ each.state }}</td>
+            <td>
+                {%if each.image %} 
+                <p><a class="link-opacity-75-hover" href="{{each.image.url}}" style="color: chartreuse;">{{each.full_name}}-image</a></p>
+                {%else%}
+                Not Available
+                {%endif%}
+            </td>
+            <td>
+                <a href="/update/{{each.pk}}" class="btn btn-sm btn-primary"><i class="fas fa-edit">Update</i></a><snall style="padding-left: 15px;"></snall>
+                <a href="/delete/{{each.pk}}" class="btn btn-sm btn-danger"><i class="fas fa-trash">Delete</i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{%else %}
+<h1 align="center" style="color:white;"> Records not found</h1>
+    {%for key,value in request.session.items %}
+        {% if key == "UserIsActive" %}
+            <div class="container d-flex justify-content-center">
+                <a href="/registration/{{value}}" class="btn btn-lg btn-primary "><i class="fas fa-edit">Add Record</i></a>
+            </div>
+        {%endif%}
+    {%endfor%}
+{%endif%}
+
+{%endblock%}

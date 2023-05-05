@@ -1,0 +1,32 @@
+{% extends 'login/base.html' %}
+{%block title%}
+{%load static%}
+    <title>
+        Login
+    </title>
+{%endblock%}
+{%block content%}
+    <br><br><br><br><br>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="card text-black col-md-6" style="background-color: rgb(205, 205, 205);">
+        <div class="card-header"><h2 class="text-center mb-4">Login</h2></div>
+        <div class="card-body">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="form-group text-decoration-solid">
+              {{form.username.label}}
+              {{form.username}}<br>
+              {{form.password.label}}
+              {{form.password}}
+              <span class="label label-warning" style="color: red;">{{form.username.errors}}</span>
+          </div><br>
+          <div class="form-group text-center text-decoration-solid ">
+            <button type="submit" name="btn" class="btn btn-primary btn-block">Login</button>
+            <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+{%endblock%}

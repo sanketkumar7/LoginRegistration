@@ -1,0 +1,74 @@
+{% extends "login/base.html"%}
+{% block title%}
+<title>
+    Registration
+</title>
+{%endblock%}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <h3 style="background-color: rgb(245, 250, 255,0.5);text-decoration: wavy;text-align: center;">Welcome {{username}}</h3>
+    <div class="col-md-8">
+      <div class="card" style="opacity: 0.9;">
+        <div class="card-header">Student Registration:{%for msg in messages%} <large style="color:rgb(242, 13, 13); text-decoration: solid;">{{msg}}</small> {%endfor%}</div>
+        <div class="card-body" style="background-color:aliceblue;">
+          <form method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="form-group row">
+              <label for="{{ form.full_name.id_for_label }}" class="col-md-4 col-form-label text-md-right">Full Name</label>
+              <div class="col-md-6">
+                {{ form.full_name }}
+                <span class="label label-warning" style="color: red;">{{form.full_name.errors}}</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 col-form-label text-md-right">Gender</label>
+              <div class="col-md-6">
+                <div class="form-check form-check-inline">
+                  {{ form.gender }}
+                  <span class="label label-warning" style="color: red;">{{form.gender.errors}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="{{ form.dob.id_for_label }}" class="col-md-4 col-form-label text-md-right">Date of Birth</label>
+              <div class="col-md-6">
+                {{ form.dob }}
+                <span class="label label-warning" style="color: red;">{{form.dob.errors}}</span>
+              </div>
+            </div><br>
+            <div class="form-group row">
+              <label for="{{ form.address.id_for_label }}" class="col-md-4 col-form-label text-md-right">Address</label>
+              <div class="col-md-6">
+                {{ form.address }}
+                <span class="label label-warning" style="color: red;">{{form.address.errors}}</span>
+              </div>
+            </div><br>
+            <div class="form-group row">
+              <label for="{{ form.state.id_for_label }}" class="col-md-4 col-form-label text-md-right">State</label>
+              <div class="col-md-6">
+                {{ form.state }}
+                <span class="label label-warning" style="color: red;">{{form.state.errors}}</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="{{ form.image.id_for_label }}" class="col-md-4 col-form-label text-md-right"></label>
+              <div class="col-md-6">
+                <br>
+                {{ form.image }}
+                <span class="label label-warning" style="color: red;">{{form.image.errors}}</span>
+              </div>
+            </div>
+            <div class="input-group-btn row ">
+              <div class="col-md-6 offset-md-4"><br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/display/" class="btn btn btn-info"><i class="fas fa-trash">View Record</i></a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -65,7 +65,7 @@ class Student_Registration(forms.ModelForm):
     class Meta:
         model=Student
         fields="__all__"
-class Student_Update_Form(forms.ModelForm,object):
+class Student_Update_Form(forms.ModelForm):
     full_name=forms.CharField(validators=[RegexValidator(regex='[a-zA-Z]{2,30}$',message='only alphabets allowed only.')],widget=forms.TextInput(attrs={"class":"form-control"}),max_length=100,required=True)
     gender=forms.ChoiceField(widget=forms.RadioSelect,choices=choose_gender,required=True)
     dob=forms.DateField(initial=datetime.date.today,required=True,widget=forms.DateInput(attrs={'class':'form-control','type':'date'}),label='Date of Birth')
@@ -82,7 +82,7 @@ class Student_Update_Form(forms.ModelForm,object):
     class Meta:
         model = Student
         fields = '__all__'
-    def __init__(self, *args, **kwargs):
+    '''def __init__(self, *args, **kwargs):
         mymodel_instance = kwargs.pop('mymodel_instance', None)
         super(Student_Update_Form, self).__init__(*args, **kwargs)
         if mymodel_instance:
@@ -91,5 +91,5 @@ class Student_Update_Form(forms.ModelForm,object):
             self.fields['dob'].initial = mymodel_instance.dob
             self.fields['address'].initial = mymodel_instance.address
             self.fields['state'].initial = mymodel_instance.state
-            self.fields['image'].initial = mymodel_instance.image
+            self.fields['image'].initial = mymodel_instance.image'''
             

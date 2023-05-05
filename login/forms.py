@@ -9,7 +9,6 @@ class loginForm(forms.ModelForm):
         cleaned_data=super().clean()
         username=self.cleaned_data['username']
         password=self.cleaned_data['password']
-        print('--',username,'--',password)
         if not admin.objects.filter(username=username,password=password).exists():
             self.add_error('username','Invalid Username or Password')
         return cleaned_data

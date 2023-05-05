@@ -36,7 +36,7 @@ def std_registration_view(request,username):
 
 @check_session
 def display_view(request):
-    student=Student.objects.all().order_by('full_name')
+    student=Student.objects.all()
     myFilter=StudentFilters(request.GET,queryset=student)
     student=myFilter.qs
     return render(request,'std_registration/display.html',{'student':student,'myFilter':myFilter})

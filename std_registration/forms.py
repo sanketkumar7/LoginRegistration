@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import FileExtensionValidator,RegexValidator
 from .models import Student
-import datetime
+import datetime,re
 
 choose_gender=[('Male','Male'),('Female','Female'),('Other','Other')]
 union_territories = [
@@ -42,25 +42,34 @@ STATE_CHOICES = sorted([
     ]+union_territories,key=lambda x:x[0])
     
 class Student_Registration(forms.ModelForm):
-    full_name=forms.CharField(validators=[RegexValidator(regex='[a-zA-Z]{2,30}$',message='only alphabets allowed.')],widget=forms.TextInput(attrs={"class":"form-control"}),max_length=100,required=True)
+    full_name=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control"}),max_length=100,required=True)
     gender=forms.ChoiceField(widget=forms.RadioSelect,choices=choose_gender,required=True)
     dob=forms.DateField(initial=datetime.date.today,required=True,widget=forms.DateInput(attrs={'class':'form-control','type':'date'}),label='Date of Birth')
     address=forms.CharField(max_length=200,widget=forms.Textarea(attrs={'class': 'form-control'}),required=True)
     state = forms.ChoiceField(choices=STATE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}),required=True)
-    image=forms.ImageField(validators=[FileExtensionValidator(allowed_extensions=['jpg','jpeg','png'],message='Only .jpg,.jpeg,.png files are allowed.'),])
+    image=forms.FileField()
     def clean(self):
-        cleaned_data=super().clean()
+        cleaned_data=super(Student_Registration,self).clean()
         full_name=self.cleaned_data['full_name']
         address=self.cleaned_data['address']
         dob=self.cleaned_data['dob']
         image=self.cleaned_data['image']
-        image_size=image.size
-        if image_size>1000*1024 or image_size<10*1024:
-            self.add_error('image','The image size must be more than 10kb and less than 1mb')
+
+        '''image_name=image.name
+        if  image_name[-4:] not in ['.jpg','.png']:
+            if image_name[-5:]!='.jpeg':
+                self.add_error('image','Invalid File type. allowed file types are .jpg, .jpeg, .png')'''
+        
+        if re.match('[a-zA-Z\s]{2,30}$',full_name) is None:
+            self.add_error('full_name','Only alphabets are allowed')
 
         if Student.objects.filter(full_name=full_name,address=address,dob=dob).exists():
             self.add_error('full_name','Same User Data Request...Full_Name, Date of Birth and Address can\'t be same')
 
+        '''image_size=image.size
+        if image_size>1000*1024 or image_size<10*1024:
+            self.add_error('image','The image size must be more than 10kb and less than 1mb')'''
+  
         return cleaned_data
     class Meta:
         model=Student
@@ -71,13 +80,12 @@ class Student_Update_Form(forms.ModelForm):
     dob=forms.DateField(initial=datetime.date.today,required=True,widget=forms.DateInput(attrs={'class':'form-control','type':'date'}),label='Date of Birth')
     address=forms.CharField(max_length=200,widget=forms.Textarea(attrs={'class': 'form-control'}),required=True)
     state = forms.ChoiceField(choices=STATE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}),required=True)
-    image=forms.ImageField(validators=[FileExtensionValidator(allowed_extensions=['jpg','jpeg','png'],message='Only .jpg,.jpeg,.png files are allowed.'),])
+    image=forms.ImageField()
     def clean(self):
         cleaned_data=super().clean()
-        image=self.cleaned_data['image']
-        image_size=image.size
+        '''image_size=image.size
         if image_size>1000*1024 or image_size<10*1024:
-            self.add_error('image','The image size must be more than 10kb and less than 1mb')
+            self.add_error('image','The image size must be more than 10kb and less than 1mb')'''
         return cleaned_data
     class Meta:
         model = Student

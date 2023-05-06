@@ -44,6 +44,7 @@ def display_view(request):
 @check_session
 def update_view(request,pk):
     student=Student.objects.get(pk=pk)
+    #form=Student_Update_Form(mymodel_instance=student)
     form=Student_Update_Form(instance=student)
     if request.method=='POST':
         old_image_path=student.image.path          #saving old_image path

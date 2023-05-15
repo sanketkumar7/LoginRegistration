@@ -1,0 +1,15 @@
+{%extends 'login/base.html'%}
+{%block content%}
+<div class="container">
+    <article>
+        <div class="media-body">
+            <div class="list-group">
+                <a href="#"> {{object.full_name}} </a>
+                <small>{{object.gender}} </small>
+            </div>
+            <h2>{{object.dob}}</h2>
+            <p> {{object.address}} </p>
+        </div>
+    </article>
+</div>
+{%endblock%}

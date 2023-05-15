@@ -39,3 +39,4 @@ def logout_key_view(request):
     return redirect('login')
 def about_us_view(request):
     return render(request,'login/aboutus.html')
+

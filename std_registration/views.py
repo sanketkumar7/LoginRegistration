@@ -9,7 +9,7 @@ from .filters import StudentFilters
 from django.contrib import messages
 import os
 
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView,ListView,DetailView
 
 from .models import Student
 # Create your views here.
@@ -64,6 +64,14 @@ def delete_view(request,pk):
         student.delete()
         os.remove(img_path)                        # Removing an image from the media folder.
         return redirect('/display')
+
+class student_list_view(ListView):
+     model=Student
+     template_name='std_registration/display.html'
+     context_object_name='student'
+class student_detail_view(DetailView):
+     model=Student
+     template_name='std_registration/student_detail.html'
 
 
     

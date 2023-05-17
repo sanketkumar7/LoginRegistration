@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from django.db import IntegrityError
+
+from django.core.mail import send_mail
+from datetime import datetime
+from django.conf import settings
 from .forms import Student_Registration
 from .forms import Student_Update_Form
 
@@ -72,6 +74,33 @@ class student_list_view(ListView):
 class student_detail_view(DetailView):
      model=Student
      template_name='std_registration/student_detail.html'
+
+def contact_us_view(request):
+    message_name=''
+    if request.method=='POST':
+        message_name=request.POST['name']
+        message_email=request.POST['email']
+        message=request.POST['message']
+        from_email=settings.EMAIL_HOST_USER
+        email_to=['s.sanket.p007@gmail.com',message_email]
+        #sending an Email
+        send_mail(subject=message_name,message=message,from_email=from_email,recipient_list=email_to,fail_silently=False)
+
+    return render(request,'std_registration/contact_us.html',{'msg':message_name+repr(datetime.now())})
+
+def myfunction():
+    import datetime
+    print('This is the message check!',datetime.datetime.now())
+    from apscheduler.schedulers.background import BackgroundScheduler
+    scheduler1 = BackgroundScheduler(jobstore='sqlalchemy')
+    def scheduled_function():
+        print('all students ',Student.objects.all().count())
+        print('inside the function function')
+    scheduler1.add_job(scheduled_function, 'cron', hour=17,minute=55,replace_existing=True)
+    print('Schedule begin')
+    scheduler1.start()
+    send_mail(subject='Time Scheduling',message='This is the time scheduling task testing purpose mail',from_email=settings.EMAIL_HOST_USER,recipient_list=['s.sanket.p007@gmail.com',],fail_silently=False)
+    print('mail sent')
 
 
     

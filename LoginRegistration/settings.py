@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import django_heroku
-import dj_database_url
-from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY ='*gj#l!r1p#3arik-j6wzsuzv+c_ockjh4larjilpecxc)lz5jf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'login',
     'std_registration',
+    #'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -125,7 +123,6 @@ STATIC_ROOT=BASE_DIR/'static'
 STATICFILES_DIRS=(
     BASE_DIR/'staticfiles',
 )
-STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT=BASE_DIR/'media'
 MEDIA_URL='/media/'
 
@@ -134,4 +131,16 @@ MEDIA_URL='/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-django_heroku.settings(locals())
+#Email setting
+EMAIL_HOST='smtp.gmail.com'    #host name
+EMAIL_PORT=587                 # port number for either tls or ssl
+EMAIL_HOST_USER='sanketkumar.coder@gmail.com'  # your email address
+EMAIL_HOST_PASSWORD='hhappmgskwmhcmir'         #your password
+EMAIL_USE_TLS=True
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_USE_SSL=False
+
+#time Scheduler:
+'''CRONJOBS = [
+    ('18 16 * * *', 'std_registration.views.my_function', '>> /tmp/cronjob.log')
+]'''
